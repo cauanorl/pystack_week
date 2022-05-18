@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <style>
+      nav {
+        padding-left: 15px;
+      }
+
+      .font-degrade-nav {
+        background-image: linear-gradient(90deg, rgba(255,207,0,1) 0%, rgba(231,71,220,1) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        padding-bottom: 10px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    </style>
+    {% include 'partials/_head.html' %}
+    {% block head %}{% endblock %}
+  </head>
+  <body class='fundo'>
+    {% include 'partials/_nav.html' %}
+    {% block body %}{% endblock %}
+
+    {% include 'partials/_foot.html' %}
+  </body>
+</html>

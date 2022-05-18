@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'jobs/css/list_jobs.css' %}">
+{% endblock %}
+
+
+{% block body %}
+  <div class="container">
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-sm">
+        <form action="{% url "jobs:list_jobs" %}" method="GET">
+          <input type="text" class="form-control" placeholder="Preço mínimo" name="price_min">
+          <br>
+          <input type="text" class="form-control" placeholder="Preço máximo" name="price_max">
+      </div>
+          <div class="col-sm">
+            <input type="date" class="form-control" name="deadline_min">
+            <br>
+            <input type="date" class="form-control" name="deadline_max">
+          </div>
+          <div class="col-sm">
+            <select class="form-control" name="category">
+              <option value="">Todos</option>
+              <option value="D">Design</option>
+              <option value="EV">Edição de vídeo</option>
+            </select>
+            <br>
+            <input type="submit" class="btn btn-success btn-lg" value="FILTRAR">
+        </form>
+    </div>
+  </div>
+  <br>
+  <br>
+  <h2 class="titulo">JOB’S EM ABERTO:</h2>
+  
+
+
+
+    <div class="row justify-content-around">
+
+      {% for job in jobs %}
+
+        <div class="col-6 row-card">
+          <div class="card-job">
+            <div class="header-job">
+              <h4 class="titulo-job">{{job.title}}</h4>
+            </div>
+            <div class="body-job">
+              <p class="titulo-body">Descrição:</p>
+              <div style="width: 70%">
+                <p>{{job.description}}</p>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  <p class="titulo-body">Preço:</p>
+                  <p>{{job.price}}</p>
+                </div>
+                <div class="col-4">
+                  <p class="titulo-body">Prazo:</p>
+                  <p>{{job.delivery_time}}</p>
+                </div>
+                <div class="col-4">
+                  <p class="titulo-body">Categoria:</p>
+                  <p>{% if job.category == 'D'%}
+                      Design
+                    {% else %}
+                      Edição de vídeo
+                    {% endif%}
+                  </p>
+                </div>
+              </div>
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-{{ job.id }}">Ver detalhes</button>
+
+              <br>
+              <br>
+            </div>
+          </div>
+        </div>
+        
+
+        <div class="modal fade" id="modal-{{job.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div style="background-color: #333;" class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title job-modal-titulo" id="exampleModalLabel">JOB:</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <div>
+                          <h4 class="titulo-job">{{job.title}}</h4>
+                          
+                          <h6 class="titulo-body">Descrição:</h6>
+      
+                          <p>{{job.description}}</p>
+      
+                          <div class="row">
+      
+                              <div class="col-4">
+      
+                                  <h6 class="titulo-body">Preço:</h6>
+      
+                                  <p>{{job.price}}</p>
+      
+                              </div>
+      
+                              <div class="col-4">
+      
+                                  <h6 class="titulo-body">Prazo:</h6>
+      
+                                  <p>{{job.delivery_time}}</p>
+      
+                              </div>
+      
+                              <div class="col-4">
+      
+                                  <h6 class="titulo-body">Categoria:</h6>
+      
+                                  <p>{{job.category}}</p>
+      
+                              </div>
+      
+                              
+      
+                          </div>
+      
+                          <h4 style="display:inline;" class="job-modal-titulo">Referencias:</h4>
+                          <br>
+                          <br>
+                          <div class="row">
+      
+                              {% for reference in job.references.all %}
+                              <div class="col-4">
+                                  <img src="{{reference}}" width="100%"> 
+                                  
+      
+                              </div>
+                              {% endfor %}
+      
+                              
+      
+                          </div>
+                          <br>
+                          <br>
+                          <a href="{% url 'jobs:accept_job' job.id %}" class="btn btn-success btn-lg">ACEITAR JOB</a>
+      
+                      </div>
+                  </div>
+              
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+        
+{% endblock %}
+
